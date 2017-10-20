@@ -74,7 +74,7 @@ def main():
     while not response_queue.empty():
         i, v = response_queue.get()
         if __name__ == '__main__':
-            print '%s: %s' % (i, str(v))
+            print('%s: %s' % (i, str(v)))
         if v:
             all_good = True
     if all_good:

@@ -110,11 +110,11 @@ if __name__ == '__main__':
     mysql_conn = db_connect(pc['user'], pc['pass'])
     CURSOR = mysql_conn.cursor()
     asset_hexids = get_assets(REMOVE_OLDER_THAN)
-    print '%s assets identifed.' % len(asset_hexids)
+    print('%s assets identifed.' % len(asset_hexids))
     # raw_input('Press any key to continue...')
     for row in asset_hexids:
         asset_id, ctx = row
-        print 'Removing: %s...' % asset_id
+        print('Removing: %s...' % asset_id)
         hexip = get_asset_ip(asset_id)
         if not hexip:
             human_ip = 'BROKEN_LINK_BAD_DB_ENTRY'

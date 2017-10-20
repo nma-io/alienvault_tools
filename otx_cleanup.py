@@ -145,7 +145,7 @@ class OTXDB(object):
                         # FIX ME: This should have some pulse ID checking
                         # - and should remove from smembers first.
             except Exception as err:
-                print err
+                print(err)
                 pass
 
     def remove_pulse(self, pulse_id):
@@ -186,14 +186,14 @@ if __name__ == '__main__':
             for line in fh:
                 otx.remove(line.rstrip())
     elif args.single:
-        print 'Removing Observable: %s' % args.single
+        print('Removing Observable: %s' % args.single)
         start, end = otx.remove(args.single)
-        print 'Removed %s. %s remaining.' % (start, end)
+        print('Removed %s. %s remaining.' % (start, end))
     elif args.pulse:
         otx.remove_pulse(args.pulse)
-        print 'Removing Pulse: %s' % args.pulse
+        print('Removing Pulse: %s' % args.pulse)
         otx.remove_pulse(args.pulse)
     elif args.removeold:
         otx.remove_old_pulses(args.removeold)
     else:
-        print 'I do not understand, please use -h if you need help'
+        print('I do not understand, please use -h if you need help')
