@@ -184,7 +184,7 @@ if __name__ == '__main__':
     if args.filename:
         with open(args.filename, 'r') as fh:
             for line in fh:
-                otx.remove(line)
+                otx.remove(line.rstrip())
     elif args.single:
         print 'Removing Observable: %s' % args.single
         start, end = otx.remove(args.single)
