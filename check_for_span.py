@@ -2,15 +2,15 @@
 """Tool to quickly monitor for SPAN activity on interfaces."""
 import os
 import sys
-import pcap
 import time
+import pcapy # Works with Python2 and Python3. Use apt-get or pip, either way
 import socket
 import subprocess
 import multiprocessing
 import logging, logging.handlers
-
+    
 __author__ = 'Nicholas Albright'
-__version__ = 0.1
+__version__ = 0.2 # Python3 support added.
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 log = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ def _pp(ts, pkt):
 
 def monitor(iface, ignoreip, queue):
     """Monitor a given interface."""
-    pc = pcap.pcap(name=iface, timeout_ms=100, immediate=True)
+    pc = pcapy.open_live(iface, 240, True, 100)
     pc.setfilter('tcp and not host %s' % ignoreip)
     count = 0
     ts = int(time.time())
@@ -43,7 +43,9 @@ def monitor(iface, ignoreip, queue):
 def get_interfaces():
     """Collect Interface data."""
     interface_list = []
-    interface_query = subprocess.Popen(['/sbin/ifconfig', '-s'], stdout=subprocess.PIPE).communicate()[0]
+    interface_query = subprocess.Popen(
+        ['/sbin/ifconfig', '-s'], 
+        stdout=subprocess.PIPE).communicate()[0]
     for line in interface_query.splitlines():
         if '1500' not in line:  # Ethernet
             continue
