@@ -1,4 +1,7 @@
 #!/bin/bash
+# Fix that pesky correlation issue where
+# alerts can never be closed/worked. 
+# Cron? One off? Depending on your frequency needs
 # Nicholas Albright (@nma_io)
 HOST=`grep ^db_ip= /etc/ossim/ossim_setup.conf | cut -f 2 -d "=" | sed '/^$/d'`
 USER=`grep ^user= /etc/ossim/ossim_setup.conf | cut -f 2 -d "=" | sed '/^$/d'`
