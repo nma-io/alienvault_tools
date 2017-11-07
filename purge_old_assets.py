@@ -62,7 +62,7 @@ def get_assets(remove_days=30):
     """
     if type(remove_days) != int:
         raise Exception('Error - Get_assets requires an integer.')
-    find_asset_sql = 'select hex(id),hex(ctx) from host where updated < DATE_SUB(NOW(), INTERVAL %s DAY);' % remove_days
+    find_asset_sql = 'select hex(id),hex(ctx) from host where external_host = 0 and updated < DATE_SUB(NOW(), INTERVAL %s DAY);' % remove_days
     CURSOR.execute(find_asset_sql)
     r = [(x[0], x[1]) for x in CURSOR.fetchall()]
     return r
@@ -110,11 +110,11 @@ if __name__ == '__main__':
     mysql_conn = db_connect(pc['user'], pc['pass'])
     CURSOR = mysql_conn.cursor()
     asset_hexids = get_assets(REMOVE_OLDER_THAN)
-    print('%s assets identifed.' % len(asset_hexids))
+    print '%s assets identifed.' % len(asset_hexids)
     # raw_input('Press any key to continue...')
     for row in asset_hexids:
         asset_id, ctx = row
-        print('Removing: %s...' % asset_id)
+        print 'Removing: %s...' % asset_id
         hexip = get_asset_ip(asset_id)
         if not hexip:
             human_ip = 'BROKEN_LINK_BAD_DB_ENTRY'
