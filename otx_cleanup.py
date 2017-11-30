@@ -130,6 +130,8 @@ class OTXDB(object):
         pulses = self.rdb[db_index].keys('*')
         for pulse in pulses:
             try:
+                if not pulse: continue
+                if not pulse.startswith('PulseNS') or '_' in pulse: continue
                 data = ast.literal_eval(self.rdb[db_index].get(pulse))
                 pulse_time = time.mktime(
                     time.strptime(
