@@ -11,7 +11,7 @@ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLi
 wget http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz >/dev/null 2>&1
 
 for file in $(ls -1 Geo*.dat.gz); do gzip -d $file; done >/dev/null 2>&1
-mv Geo*.dat /usr/share/geoip/ >/dev/null 2>&1
+mv Geo*.dat /usr/share/GeoIP/ >/dev/null 2>&1
 
 echo "Updating OPENVAS!"
 openvas-nvt-sync >/dev/null 2>&1
