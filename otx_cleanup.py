@@ -126,12 +126,16 @@ class OTXDB(object):
         :params day_delta number of days you want to keep observables.
 
         """
+        whitelist = (  
+            # Add Pulses here if you want them to remain longer than XX days (Example: APT Domains
+        )
         db_index = 99
         pulses = self.rdb[db_index].keys('*')
         for pulse in pulses:
             try:
                 if not pulse: continue
                 if not pulse.startswith('PulseNS') or '_' in pulse: continue
+                if pulse in whitelist: continue
                 data = ast.literal_eval(self.rdb[db_index].get(pulse))
                 pulse_time = time.mktime(
                     time.strptime(
@@ -140,15 +144,14 @@ class OTXDB(object):
                 )
                 if pulse_time >= int(time.time()) - (86400 * int(day_delta)):
                     continue
+                self.remove_pulse(pulse.split(':')[1])  # Remove the whole pulse; then remove individual indicators. 
                 for ind in data['indicators']:
                     if len(self._get_keys(ind)) == 1:
-                        # Remove if its only in one Pulse.
                         self.remove(ind)
-                        # FIX ME: This should have some pulse ID checking
-                        # - and should remove from smembers first.
             except Exception as err:
                 print(err)
                 pass
+
 
     def remove_pulse(self, pulse_id):
         """Remove Pulse from Datastore.
