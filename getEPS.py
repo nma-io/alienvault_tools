@@ -23,6 +23,6 @@ if __name__ == '__main__':
     pc = config_parse(CONFIG_FILE)
     mysql_conn = MySQLdb.connect(host='127.0.0.1', user=pc['user'], passwd=pc['pass'], db='alienvault')
     CURSOR = mysql_conn.cursor()
-    CURSOR.execute('select COUNT(*) from alienvault_siem.acid_event WHERE timestamp > DATE_SUB(NOW(), INTERVAL 60 MINUTE);')
-    eps = int(CURSOR.fetchone()[0]) / 3600
+    CURSOR.execute('select sum(stat) from acl_entities_stats;'
+    eps = int(CURSOR.fetchone()[0])
     print(eps)
