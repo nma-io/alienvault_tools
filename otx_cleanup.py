@@ -1,5 +1,5 @@
 #!/usr/bin/python
-"""OTX Post Import Whitelisting Tool.
+"""OTX Post Import Allow listing Tool.
 
 Copyright (c) 2017, Nicholas Albright
 All rights reserved.
@@ -45,7 +45,7 @@ are no longer checked by Rhythm - HOWEVER, if you delete the pulse from DB 99
 or if it is modified, the IOC's will be reinserted.
 
 The best technique here is to:
-. Maintain a flat text file (whitelist) that is used frequently to purge items
+. Maintain a flat text file (Allowlist) that is used frequently to purge items
 such as checkip.dyndns.org
 . Query DB99 for pulses last modified >= 90 days ago and store the PULSE ID
 . Compare all observables listed in DB 0-2 with Pulse ID's noted above, remove
@@ -126,7 +126,7 @@ class OTXDB(object):
         :params day_delta number of days you want to keep observables.
 
         """
-        whitelist = (  
+        allowlist = (  
             # Add Pulses here if you want them to remain longer than XX days (Example: APT Domains
         )
         db_index = 99
@@ -135,7 +135,7 @@ class OTXDB(object):
             try:
                 if not pulse: continue
                 if not pulse.startswith('PulseNS') or '_' in pulse: continue
-                if pulse in whitelist: continue
+                if pulse in allowlist: continue
                 data = ast.literal_eval(self.rdb[db_index].get(pulse))
                 pulse_time = time.mktime(
                     time.strptime(
@@ -168,14 +168,14 @@ class OTXDB(object):
 
 def parse_args():
     """Parse Commandline Arguments."""
-    opts = argparse.ArgumentParser(description='OTX Whitelisting Application')
+    opts = argparse.ArgumentParser(description='OTX Allow-listing Application')
     opts.add_argument(
-        '-f', '--filename', help='filename containing whitelist')
+        '-f', '--filename', help='filename containing allowlist')
     opts.add_argument('-p', '--pulse', help='purge pulse ID')
     opts.add_argument(
         '-r', '--removeold', help='Remove pulses older than... ')
     opts.add_argument(
-        '-s', '--single', help='observable to whitelist (only one)')
+        '-s', '--single', help='observable to allowlist (only one)')
     args = opts.parse_args()
     if not args.single and not args.removeold and not args.pulse and not args.filename:
         opts.print_help()
